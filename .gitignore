@@ -7,7 +7,6 @@ db.sqlite3
 media/
 
 # Environments
-django-advance-education/
 venv/
 env/
 .env
