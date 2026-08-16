@@ -51,6 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=100)
 
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
 
