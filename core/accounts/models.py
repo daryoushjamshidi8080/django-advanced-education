@@ -1,11 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
-
 class UserManager(BaseUserManager):
     """"
     Custom user manager for our app
-
     """
 
     def create_user(self, email, password=None, **extra_fields):
@@ -13,7 +11,7 @@ class UserManager(BaseUserManager):
         Create and save a user with the given email and password
         """
         if not email:
-            raise ValueError('Email is required for user creation')
+            raise ValueError("Email is required for user creation")
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
