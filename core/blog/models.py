@@ -2,16 +2,17 @@ from django.db import models
 from accounts.models import User
 
 # class post
-
-
 class Post(models.Model):
+    """
+        this is a class to define posts for blog app 
+    """
     auther = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
-    category = models.ForeignKey(
-        'Category', on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     status = models.BooleanField(default=True)
+
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -24,7 +25,7 @@ class Post(models.Model):
 # class category
 class Category(models.Model):
     name = models.CharField(max_length=250)
+    
 
     def __str__(self) -> str:
-
         return f" category : '{self.name}'"
