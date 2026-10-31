@@ -12,12 +12,18 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {
-            'fields':(
-                'email',
-                'password'
-            )
-        }),
+            'fields':('email','password')
+        }),('permissions',
+            {'fields':('is_staff', 'is_active', 'is_superuser'),}
+        )
     )
+
+    add_fieldsets = (
+            (None, {
+                'classes':('wide'),
+                'fields':('email','password1','password2', 'is_staff', 'is_active', 'is_superuser')
+            }),
+        )
 
 admin.site.register(User,CustomUserAdmin)
 
