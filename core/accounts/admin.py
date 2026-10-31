@@ -15,6 +15,10 @@ class CustomUserAdmin(UserAdmin):
             'fields':('email','password')
         }),('permissions',
             {'fields':('is_staff', 'is_active', 'is_superuser'),}
+        ),('group permissions',
+            {'fields':('groups', 'user_permissions'),}
+        ),('important date',
+            {'fields':('last_login', ),}
         )
     )
 
