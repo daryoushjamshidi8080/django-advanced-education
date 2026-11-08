@@ -2,10 +2,10 @@ from typing import Any
 
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import FormView, TemplateView, RedirectView, FormView, ListView
 from  .models import Post
-from django.views.generic import ListView
-
+from .forms import ContactForm
+from django.urls import reverse_lazy
 
 
 def IndexViews(request):
@@ -62,8 +62,19 @@ class PostList(ListView):
 
     context_object_name = 'posts'
     paginate_by = 2
+    # ordering = '-id' 
 
 
     def get_queryset(self) -> QuerySet[Any, Any]:
-        posts = Post.objects.filter(status=True)
-        return posts
+        posts = Post.objects.filter(status=True).order_by('id')
+        return posts 
+
+
+class PostCreateView(FormView):
+    """
+        a class 
+    """
+    template_name = "blog/contact.html"
+    form_class = ContactForm
+    success_url = reverse_lazy("blog:post-list")
+    

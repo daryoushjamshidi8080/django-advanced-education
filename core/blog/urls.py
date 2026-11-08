@@ -13,5 +13,6 @@ urlpatterns = [
     # path('', TemplateView.as_view(template_name ='index.html', extra_context={'name': 'ali'}), name='home') # direct redirect 
     path('', views.IndexView.as_view(), name='home'),
     path('post/<int:pk>/', views.MyRedirectView.as_view(), name ='post_redirect'), # custom redirect 
-    path('post-list/', views.PostList.as_view(), name='post-list')
+    path('post-list/', views.PostList.as_view(), name='post-list'),
+    path('post/create/', views.PostCreateView.as_view(), name="post-create")
 ]

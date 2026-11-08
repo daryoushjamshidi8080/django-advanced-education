@@ -13,9 +13,9 @@
 
     <br />
     <p>
-      {% for post in posts %}
+      {% for post in posts %} {% if post.image %}
       <img src="{{ post.image.url }}" alt="{{ post.title }}" />
-      {%endfor%}
+      {% endif %} {%endfor%}
     </p>
   </body>
 </html>
