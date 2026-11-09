@@ -1,10 +1,11 @@
 from typing import Any
 
 from django.db.models.query import QuerySet
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, TemplateView, RedirectView, FormView, ListView
 from  .models import Post
-from .forms import ContactForm
+from .forms import PostForm
 from django.urls import reverse_lazy
 
 
@@ -75,6 +76,10 @@ class PostCreateView(FormView):
         a class 
     """
     template_name = "blog/contact.html"
-    form_class = ContactForm
+    form_class = PostForm
     success_url = reverse_lazy("blog:post-list")
     
+    def form_valid(self, form: Any) -> HttpResponse:
+        print(form)
+        form.save()
+        return super().form_valid(form)
