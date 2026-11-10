@@ -8,13 +8,29 @@
   <body>
 <h1>Display Posts</h1>
 
+<a href="{% url "blog:post-create" %}">
+  <h5>create</h5>
+</a>
 <ul>
   {% for post in posts %}
 
-  <li>Author: {{ post.auther }}</li>
+  <li>Author: {{ post.author }}</li>
+  <li>First Name {{post.author.first_name}}</li>
   <li>Title: {{ post.title }}</li>
   <li>Content: {{ post.content }}</li>
   <li>Category: {{ post.category }}</li>
+
+  <ul>
+    <li><a href="{% url 'blog:post-edit' pk=post.id %}">
+      <h5>Edit</h5>
+    </a></li>
+    <li>
+        <a href="{% url 'blog:post-delete' pk=post.id %}">
+          <h5>Delete</h5>
+        </a>
+    </li> 
+  </ul>
+    
 
   <br/>
 

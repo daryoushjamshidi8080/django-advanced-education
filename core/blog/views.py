@@ -1,12 +1,23 @@
+
 from typing import Any
 
 from django.db.models.query import QuerySet
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import FormView, TemplateView, RedirectView, FormView, ListView
+from django.views.generic import FormView, TemplateView, RedirectView, FormView, ListView, CreateView, UpdateView
+from django.views.generic.edit import DeleteView
 from  .models import Post
-from .forms import ContactForm
+from .forms import PostForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views import View
 
+
+
+
+class RegisterView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
 def IndexViews(request):
     """
@@ -15,11 +26,7 @@ def IndexViews(request):
     return render(request, 'index.html')
 
 
-
-
-
-
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     """
         a class based view to show index page
     """
@@ -34,7 +41,7 @@ class IndexView(TemplateView):
 
 
 
-class MyRedirectView(RedirectView):
+class MyRedirectView(LoginRequiredMixin,RedirectView):
     """
         redirect a page with  class redirectView
     """
@@ -50,9 +57,7 @@ class MyRedirectView(RedirectView):
         return super().get_redirect_url(*args)
 
 
-
-
-class PostList(ListView):
+class PostList(LoginRequiredMixin,ListView):
     """
      a class for display posts
     """
@@ -70,11 +75,44 @@ class PostList(ListView):
         return posts 
 
 
-class PostCreateView(FormView):
+class PostFormView(LoginRequiredMixin,FormView):
     """
-        a class 
+        a class create view 
     """
     template_name = "blog/contact.html"
-    form_class = ContactForm
+    form_class = PostForm
     success_url = reverse_lazy("blog:post-list")
     
+    def form_valid(self, form: Any) -> HttpResponse:
+        print(form)
+        form.instance.auther = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+    """
+    a class create post 
+    """
+    model = Post
+    fields = ['title', 'content', 'status', 'category', 'published_date']
+    success_url = reverse_lazy('blog:post-list')
+
+    def form_valid(self, form):
+        form.instance.auther = self.request.user
+        return super().form_valid(form)
+
+
+class PostEditView(LoginRequiredMixin,UpdateView):
+    model = Post
+    form_class = PostForm
+    success_url = reverse_lazy('blog:post-list')
+
+
+class PostDeleteView(PermissionRequiredMixin,LoginRequiredMixin,DeleteView):
+    permission_required = 'blog.delete_post'
+    model = Post
+    success_url = reverse_lazy('blog:post-list')    
+    template_name = 'blog/author_confirm_delete.html'
+
+
