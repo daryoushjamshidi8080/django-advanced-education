@@ -9,7 +9,12 @@ from django.views.generic.edit import DeleteView
 from  .models import Post
 from .forms import PostForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 
+class RegisterView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
 def IndexViews(request):
     """
@@ -18,7 +23,7 @@ def IndexViews(request):
     return render(request, 'index.html')
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     """
         a class based view to show index page
     """
@@ -33,7 +38,7 @@ class IndexView(TemplateView):
 
 
 
-class MyRedirectView(RedirectView):
+class MyRedirectView(LoginRequiredMixin,RedirectView):
     """
         redirect a page with  class redirectView
     """
@@ -49,7 +54,7 @@ class MyRedirectView(RedirectView):
         return super().get_redirect_url(*args)
 
 
-class PostList(ListView):
+class PostList(LoginRequiredMixin,ListView):
     """
      a class for display posts
     """
@@ -67,7 +72,7 @@ class PostList(ListView):
         return posts 
 
 
-class PostFormView(FormView):
+class PostFormView(LoginRequiredMixin,FormView):
     """
         a class create view 
     """
@@ -82,7 +87,7 @@ class PostFormView(FormView):
         return super().form_valid(form)
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     """
     a class create post 
     """
@@ -95,13 +100,13 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:post-list')
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post-list')    
     template_name = 'blog/author_confirm_delete.html'
