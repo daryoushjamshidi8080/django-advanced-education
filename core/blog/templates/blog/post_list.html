@@ -14,7 +14,8 @@
 <ul>
   {% for post in posts %}
 
-  <li>Author: {{ post.auther }}</li>
+  <li>Author: {{ post.author }}</li>
+  <li>First Name {{post.author.first_name}}</li>
   <li>Title: {{ post.title }}</li>
   <li>Content: {{ post.content }}</li>
   <li>Category: {{ post.category }}</li>

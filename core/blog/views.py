@@ -9,8 +9,11 @@ from django.views.generic.edit import DeleteView
 from  .models import Post
 from .forms import PostForm
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
+
+
+
 
 class RegisterView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -106,7 +109,8 @@ class PostEditView(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy('blog:post-list')
 
 
-class PostDeleteView(LoginRequiredMixin,DeleteView):
+class PostDeleteView(PermissionRequiredMixin,LoginRequiredMixin,DeleteView):
+    permission_required = 'blog.delete_post'
     model = Post
     success_url = reverse_lazy('blog:post-list')    
     template_name = 'blog/author_confirm_delete.html'
