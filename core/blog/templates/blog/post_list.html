@@ -15,6 +15,9 @@
   <li>Title: {{ post.title }}</li>
   <li>Content: {{ post.content }}</li>
   <li>Category: {{ post.category }}</li>
+  <a href="{% url "blog:post-edit" pk=post.id %}">
+    <h5>Edit</h5>
+  </a>
 
   <br/>
 
