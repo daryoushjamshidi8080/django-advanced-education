@@ -1,9 +1,11 @@
+
 from typing import Any
 
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, TemplateView, RedirectView, FormView, ListView, CreateView, UpdateView
+from django.views.generic.edit import DeleteView
 from  .models import Post
 from .forms import PostForm
 from django.urls import reverse_lazy
@@ -14,10 +16,6 @@ def IndexViews(request):
     a function based view to show index page
     """
     return render(request, 'index.html')
-
-
-
-
 
 
 class IndexView(TemplateView):
@@ -49,8 +47,6 @@ class MyRedirectView(RedirectView):
         print(post)
 
         return super().get_redirect_url(*args)
-
-
 
 
 class PostList(ListView):
@@ -86,7 +82,6 @@ class PostFormView(FormView):
         return super().form_valid(form)
 
 
-
 class PostCreateView(CreateView):
     """
     a class create post 
@@ -104,8 +99,11 @@ class PostEditView(UpdateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:post-list')
-    
 
-    
+
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog:post-list')    
+    template_name = 'blog/author_confirm_delete.html'
 
 
